@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="masukkan_password">Masukkan Password</string>
+    <string name="masukkan_email">Masukkan Email</string>
+    <string name="email_error">Format email salah</string>
+    <string name="password_error">Password tidak boleh kurang dari 8 karakter</string>
+    <string name="login_title">Sudah siap untuk berbagi cerita?</string>
+    <string name="login_subtitle">Masukkan datamu dulu ya</string>
+    <string name="register_prompt">Belum punya akun? Daftar disini</string>
+    <string name="register_title">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="masukkan_nama">Masukkan Nama</string>
+    <string name="login_prompt">Sudah punya akun? Login disini</string>
+    <string name="btn_regist">Daftar</string>
+    <string name="btn_login">Masuk</string>
+    <string name="regist_successful">Registrasi berhasil, silahkan login</string>
+    <string name="regist_fail">Registration gagal</string>
+    <string name="et_name_error">Nama tidak boleh kosong</string>
+    <string name="error_email_empty">Email tidak boleh kosong</string>
+    <string name="error_password_empty">Password tidak boleh kosong</string>
+    <string name="login_needed">Login terlebih dahulu</string>
+    <string name="login_successful">Login berhasil</string>
+    <string name="login_fail">Login gagal</string>
+    <string name="image_story_content_desc">gambar dari story</string>
+    <string name="fab_addstory_content_desc">tambah cerita</string>
+    <string name="story_image_content_description">gambar dari story</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Buat Story</string>
+    <string name="enter_story_description">Masukkan deskripsi\n</string>
+    <string name="image_uploaded">Gambar terunggah</string>
+    <string name="uploaded_image_content_description">gambar yang akan diupload</string>
+    <string name="login_image_content_description">Gambar karakter login</string>
+    <string name="register_image_content_desription">Gambar karakter register</string>
+    <string name="storyapp">StoryApp.</string>
+    <string name="connecting_everyone_everywhere">Connecting everyone everywhere</string>
+    <string name="logout">Keluar</string>
+    <string name="upload_with_location">Upload dengan lokasi?</string>
+    <string name="setting_to_change_language">Pengaturan mengganti bahasa</string>
+    <string name="title_activity_maps">Maps</string>
+    <string name="maps">Maps\n</string>
+</resources>
