@@ -39,4 +39,6 @@
     <string name="setting_to_change_language">Pengaturan mengganti bahasa</string>
     <string name="title_activity_maps">Maps</string>
     <string name="maps">Maps\n</string>
+    <string name="choose_image_first">Pilih gambar terlebih dahulu</string>
+    <string name="no_image">Tidak ada gambar</string>
 </resources>

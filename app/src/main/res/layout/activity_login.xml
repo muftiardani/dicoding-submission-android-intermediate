@@ -25,7 +25,7 @@
             app:srcCompat="@drawable/ic_setting" />
 
         <ImageView
-            android:id="@+id/iv_login"
+            android:id="@+id/ivLogin"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:contentDescription="@string/login_image_content_description"
@@ -38,7 +38,7 @@
             app:layout_constraintVertical_bias="0.354" />
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -50,25 +50,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_login"
+            app:layout_constraintTop_toBottomOf="@+id/ivLogin"
             tools:alpha="100" />
 
         <TextView
-            android:id="@+id/tv_subtitle"
+            android:id="@+id/tvSubtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:alpha="0"
             android:text="@string/login_subtitle"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
             tools:alpha="100" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ed_login_email"
+            android:id="@+id/edLoginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
             android:hint="@string/masukkan_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
             app:startIconDrawable="@drawable/ic_email"
             tools:alpha="100">
 
@@ -92,7 +92,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ed_login_password"
+            android:id="@+id/edLoginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -103,7 +103,7 @@
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ed_login_email"
+            app:layout_constraintTop_toBottomOf="@id/edLoginEmail"
             app:startIconDrawable="@drawable/ic_lock"
             tools:alpha="100">
 
@@ -118,7 +118,7 @@
 
 
         <TextView
-            android:id="@+id/tv_register"
+            android:id="@+id/tvRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -128,15 +128,15 @@
             android:textColor="@color/blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/btn_login"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ed_login_password"
+            app:layout_constraintTop_toBottomOf="@+id/edLoginPassword"
             app:layout_constraintVertical_bias="0.0"
             tools:alpha="100" />
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -161,4 +161,5 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

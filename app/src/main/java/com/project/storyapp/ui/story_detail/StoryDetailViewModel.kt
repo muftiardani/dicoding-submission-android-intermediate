@@ -22,17 +22,49 @@ class StoryDetailViewModel(
     val errorMessage: LiveData<String?> = _errorMessage
 
     fun showDetailStory(id: String) {
-        _isLoading.value = true
-        _errorMessage.value = null
         viewModelScope.launch {
             try {
-                val response = repository.getStoryDetail(id)
-                _story.value = response.story!!
+                fetchStoryDetail(id)
             } catch (e: Exception) {
-                _errorMessage.value = e.message
-            } finally {
-                _isLoading.value = false
+                handleError(e)
             }
         }
+    }
+
+    private suspend fun fetchStoryDetail(id: String) {
+        setLoadingState(true)
+        clearErrorMessage()
+
+        val response = repository.getStoryDetail(id)
+        processStoryResponse(response.story)
+
+        setLoadingState(false)
+    }
+
+    private fun processStoryResponse(story: Story?) {
+        story?.let {
+            _story.value = it
+        } ?: handleNullStory()
+    }
+
+    private fun handleNullStory() {
+        setErrorMessage("Story data not found")
+    }
+
+    private fun handleError(exception: Exception) {
+        setErrorMessage(exception.message)
+        setLoadingState(false)
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
+    private fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    private fun setErrorMessage(message: String?) {
+        _errorMessage.value = message
     }
 }

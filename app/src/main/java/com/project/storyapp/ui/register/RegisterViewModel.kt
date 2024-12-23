@@ -11,6 +11,10 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repository: RegisterRepository) : ViewModel() {
 
+    companion object {
+        private const val TAG = "RegisterViewModel"
+    }
+
     private val _registerResult = MutableLiveData<RegisterResponse?>()
     val registerResult: LiveData<RegisterResponse?> = _registerResult
 
@@ -21,20 +25,44 @@ class RegisterViewModel(private val repository: RegisterRepository) : ViewModel(
     val errorMessage: LiveData<String?> = _errorMessage
 
     fun register(name: String, email: String, password: String) {
-        _isLoading.value = true
-        _errorMessage.value = null
-
         viewModelScope.launch {
             try {
-                val response = repository.register(name, email, password)
-                _isLoading.value = false
-                _registerResult.value = response
-                Log.d("RegisterViewModel", "Success: ${response.message}")
+                handleRegistration(name, email, password)
             } catch (e: Exception) {
-                _isLoading.value = false
-                _errorMessage.value = "Registration failed: ${e.message}"
-                Log.e("RegisterViewModel", "Error: ${e.message}")
+                handleError(e)
             }
         }
+    }
+
+    private suspend fun handleRegistration(name: String, email: String, password: String) {
+        setLoadingState(true)
+        clearErrorMessage()
+
+        val response = repository.register(name, email, password)
+        processRegistrationResponse(response)
+    }
+
+    private fun processRegistrationResponse(response: RegisterResponse) {
+        setLoadingState(false)
+        _registerResult.value = response
+        Log.d(TAG, "Success: ${response.message}")
+    }
+
+    private fun handleError(exception: Exception) {
+        setLoadingState(false)
+        setErrorMessage("Registration failed: ${exception.message}")
+        Log.e(TAG, "Error: ${exception.message}")
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
+    private fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    private fun setErrorMessage(message: String) {
+        _errorMessage.value = message
     }
 }

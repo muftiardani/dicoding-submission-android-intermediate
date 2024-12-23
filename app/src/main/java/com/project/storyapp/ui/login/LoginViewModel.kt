@@ -15,6 +15,10 @@ class LoginViewModel(
     private val userPreference: UserPreference
 ) : ViewModel() {
 
+    companion object {
+        private const val TAG = "LoginViewModel"
+    }
+
     private val _loginResult = MutableLiveData<LoginResponse?>()
     val loginResult: LiveData<LoginResponse?> = _loginResult
 
@@ -25,24 +29,55 @@ class LoginViewModel(
     val errorMessage: LiveData<String?> = _errorMessage
 
     fun login(email: String, password: String) {
-        _isLoading.value = true
-        _errorMessage.value = null
-
         viewModelScope.launch {
             try {
-                val response = repository.login(email, password)
-                _isLoading.value = false
-                _loginResult.value = response
-
-                response.loginResult?.token?.let { token ->
-                    userPreference.saveToken(token)
-                }
-                Log.d("LoginViewModel", "Success: ${response.message}")
+                handleLoginAttempt(email, password)
             } catch (e: Exception) {
-                _isLoading.value = false
-                _errorMessage.value = "Login failed: ${e.message}"
-                Log.e("LoginViewModel", "Error: ${e.message}")
+                handleLoginError(e)
             }
+        }
+    }
+
+    private suspend fun handleLoginAttempt(email: String, password: String) {
+        setLoadingState(true)
+        clearErrorMessage()
+
+        val response = repository.login(email, password)
+        processLoginResponse(response)
+
+        Log.d(TAG, "Success: ${response.message}")
+    }
+
+    private fun processLoginResponse(response: LoginResponse) {
+        setLoadingState(false)
+        _loginResult.value = response
+
+        response.loginResult?.token?.let { token ->
+            saveUserToken(token)
+        }
+    }
+
+    private fun handleLoginError(exception: Exception) {
+        setLoadingState(false)
+        setErrorMessage("Login failed: ${exception.message}")
+        Log.e(TAG, "Error: ${exception.message}")
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
+    private fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    private fun setErrorMessage(message: String) {
+        _errorMessage.value = message
+    }
+
+    private fun saveUserToken(token: String) {
+        viewModelScope.launch {
+            userPreference.saveToken(token)
         }
     }
 

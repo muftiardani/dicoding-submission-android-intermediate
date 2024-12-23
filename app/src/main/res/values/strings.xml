@@ -38,4 +38,6 @@
     <string name="maps">Maps\n</string>
     <string name="upload_with_location">Upload with Location?</string>
     <string name="setting_to_change_language">Setting to change language</string>
+    <string name="choose_image_first">Choose image first</string>
+    <string name="no_image">No image</string>
 </resources>

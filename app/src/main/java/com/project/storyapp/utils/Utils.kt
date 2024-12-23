@@ -12,97 +12,148 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import com.project.storyapp.BuildConfig
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import com.project.storyapp.utils.BitmapUtils.getRotatedBitmap
+import java.io.*
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
-private const val MAXIMAL_SIZE = 1000000
+/**
+ * Utility object untuk manajemen gambar
+ */
+object ImageUtils {
+    private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
+    private const val MAXIMAL_SIZE = 1000000 // 1MB in bytes
+    private const val COMPRESS_QUALITY_STEP = 5
+    private const val INITIAL_COMPRESS_QUALITY = 100
+    private const val BUFFER_SIZE = 1024
+    private const val IMAGE_JPEG_SUFFIX = ".jpg"
+    private const val IMAGE_MIME_TYPE = "image/jpeg"
+    private const val PICTURES_DIR = "Pictures/MyCamera"
 
-private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
+    private val timestamp: String
+        get() = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 
-fun getImageUri(context: Context): Uri {
-    var uri: Uri? = null
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "$timeStamp.jpg")
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/MyCamera")
+    /**
+     * Mendapatkan Uri untuk penyimpanan gambar
+     */
+    fun getImageUri(context: Context): Uri {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            getImageUriForQ(context)
+        } else {
+            getImageUriForPreQ(context)
         }
-        uri = context.contentResolver.insert(
+    }
+
+    /**
+     * Membuat temporary file untuk gambar
+     */
+    fun createCustomTempFile(context: Context): File {
+        val filesDir = context.externalCacheDir
+        return File.createTempFile(timestamp, IMAGE_JPEG_SUFFIX, filesDir)
+    }
+
+    /**
+     * Mengkonversi Uri ke File
+     */
+    fun uriToFile(imageUri: Uri, context: Context): File {
+        val myFile = createCustomTempFile(context)
+        context.contentResolver.openInputStream(imageUri)?.use { inputStream ->
+            FileOutputStream(myFile).use { outputStream ->
+                val buffer = ByteArray(BUFFER_SIZE)
+                var length: Int
+                while (inputStream.read(buffer).also { length = it } > 0) {
+                    outputStream.write(buffer, 0, length)
+                }
+            }
+        }
+        return myFile
+    }
+
+    /**
+     * Mereduksi ukuran file gambar
+     */
+    fun File.reduceFileImage(): File {
+        val bitmap = BitmapFactory.decodeFile(path).getRotatedBitmap(this)
+        var compressQuality = INITIAL_COMPRESS_QUALITY
+        var streamLength: Int
+
+        do {
+            ByteArrayOutputStream().use { bmpStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+                streamLength = bmpStream.toByteArray().size
+                compressQuality -= COMPRESS_QUALITY_STEP
+            }
+        } while (streamLength > MAXIMAL_SIZE && compressQuality > 0)
+
+        FileOutputStream(this).use { fileOutputStream ->
+            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, fileOutputStream)
+        }
+
+        return this
+    }
+
+    private fun getImageUriForQ(context: Context): Uri {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "$timestamp$IMAGE_JPEG_SUFFIX")
+            put(MediaStore.MediaColumns.MIME_TYPE, IMAGE_MIME_TYPE)
+            put(MediaStore.MediaColumns.RELATIVE_PATH, PICTURES_DIR)
+        }
+        return context.contentResolver.insert(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             contentValues
+        ) ?: getImageUriForPreQ(context)
+    }
+
+    private fun getImageUriForPreQ(context: Context): Uri {
+        val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val imageFile = File(filesDir, "$PICTURES_DIR/$timestamp$IMAGE_JPEG_SUFFIX")
+        if (imageFile.parentFile?.exists() == false) {
+            imageFile.parentFile?.mkdirs()
+        }
+        return FileProvider.getUriForFile(
+            context,
+            "${BuildConfig.APPLICATION_ID}.fileprovider",
+            imageFile
         )
     }
-    return uri ?: getImageUriForPreQ(context)
 }
 
-private fun getImageUriForPreQ(context: Context): Uri {
-    val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    val imageFile = File(filesDir, "/MyCamera/$timeStamp.jpg")
-    if (imageFile.parentFile?.exists() == false) imageFile.parentFile?.mkdirs()
-
-    return FileProvider.getUriForFile(
-        context,
-        "${BuildConfig.APPLICATION_ID}.fileprovider",
-        imageFile
-    )
-}
-
-fun createCustomTempFile(context: Context): File {
-    val filesDir = context.externalCacheDir
-    return File.createTempFile(timeStamp, ".jpg", filesDir)
-}
-
-fun uriToFile(imageUri: Uri, context: Context): File {
-    val myFile = createCustomTempFile(context)
-    val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
-    val outputStream = FileOutputStream(myFile)
-    val buffer = ByteArray(1024)
-    var length: Int
-    while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
-    outputStream.close()
-    inputStream.close()
-    return myFile
-}
-
-fun File.reduceFileImage(): File {
-    val file = this
-    val bitmap = BitmapFactory.decodeFile(file.path).getRotatedBitmap(file)
-    var compressQuality = 100
-    var streamLength: Int
-    do {
-        val bmpStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
-        val bmpPicByteArray = bmpStream.toByteArray()
-        streamLength = bmpPicByteArray.size
-        compressQuality -= 5
-    } while (streamLength > MAXIMAL_SIZE)
-    bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
-    return file
-}
-
-fun Bitmap.getRotatedBitmap(file: File): Bitmap {
-    val orientation = ExifInterface(file).getAttributeInt(
-        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED
-    )
-    return when (orientation) {
-        ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(this, 90F)
-        ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(this, 180F)
-        ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(this, 270F)
-        ExifInterface.ORIENTATION_NORMAL -> this
-        else -> this
+/**
+ * Extension functions untuk Bitmap
+ */
+object BitmapUtils {
+    /**
+     * Mendapatkan rotasi yang benar untuk bitmap
+     */
+    fun Bitmap.getRotatedBitmap(file: File): Bitmap {
+        val exif = ExifInterface(file)
+        val orientation = exif.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_UNDEFINED
+        )
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(270f)
+            else -> this
+        }
     }
-}
 
-fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-    val matrix = Matrix()
-    matrix.postRotate(angle)
-    return Bitmap.createBitmap(
-        source, 0, 0, source.width, source.height, matrix, true
-    )
+    /**
+     * Merotasi bitmap sesuai dengan derajat yang ditentukan
+     */
+    private fun Bitmap.rotateImage(angle: Float): Bitmap {
+        val matrix = Matrix().apply {
+            postRotate(angle)
+        }
+        return Bitmap.createBitmap(
+            this,
+            0,
+            0,
+            width,
+            height,
+            matrix,
+            true
+        )
+    }
 }

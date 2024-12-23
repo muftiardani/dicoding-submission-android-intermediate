@@ -10,14 +10,33 @@ import com.project.storyapp.data.preference.UserPreference
 import com.project.storyapp.data.response.ListStoryItem
 import com.project.storyapp.data.retrofit.ApiService
 
-class StoryRepository(
+class StoryRepository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference
 ) {
+    companion object {
+        private const val ITEMS_PER_PAGE = 5
+
+        @Volatile
+        private var instance: StoryRepository? = null
+
+        fun getInstance(
+            apiService: ApiService,
+            userPreference: UserPreference
+        ): StoryRepository =
+            instance ?: synchronized(this) {
+                instance ?: StoryRepository(apiService, userPreference).also {
+                    instance = it
+                }
+            }
+    }
+
     fun getStories(): LiveData<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 5
+                pageSize = ITEMS_PER_PAGE,
+                enablePlaceholders = false,
+                initialLoadSize = ITEMS_PER_PAGE * 2
             ),
             pagingSourceFactory = {
                 StoryPagingSource(apiService)
@@ -25,14 +44,13 @@ class StoryRepository(
         ).liveData
     }
 
-    companion object {
-        @Volatile
-        private var instance: StoryRepository? = null
-
-        fun getInstance(apiService: ApiService, userPreference: UserPreference): StoryRepository {
-            return instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference).also { instance = it }
-            }
-        }
-    }
+    // Additional configuration for PagingConfig
+    private fun getDefaultPageConfig(): PagingConfig =
+        PagingConfig(
+            pageSize = ITEMS_PER_PAGE,
+            enablePlaceholders = false,
+            initialLoadSize = ITEMS_PER_PAGE * 2,
+            prefetchDistance = ITEMS_PER_PAGE,
+            maxSize = PagingConfig.MAX_SIZE_UNBOUNDED
+        )
 }

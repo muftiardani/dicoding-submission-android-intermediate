@@ -22,11 +22,11 @@
             app:menu="@menu/appbar_menu"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ToolbarTheme"
-            app:title="TaleNet"
+            app:title="StoryApp"
             app:titleTextColor="@color/white" />
 
         <ImageView
-            android:id="@+id/iv_detail_photo"
+            android:id="@+id/ivDetailPhoto"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:contentDescription="@string/story_image_content_description"
@@ -38,7 +38,7 @@
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tv_detail_name"
+            android:id="@+id/tvDetailName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -50,11 +50,11 @@
             android:transitionName="name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_detail_photo"
+            app:layout_constraintTop_toBottomOf="@+id/ivDetailPhoto"
             tools:text="name" />
 
         <TextView
-            android:id="@+id/tv_detail_description"
+            android:id="@+id/tvDetailDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -63,7 +63,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_name"
+            app:layout_constraintTop_toBottomOf="@id/tvDetailName"
             tools:text="lorem ipsum sit dolor amet" />
 
         <ProgressBar
@@ -76,4 +76,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

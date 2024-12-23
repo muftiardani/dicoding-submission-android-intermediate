@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_maps"
+        android:id="@+id/actionMaps"
         android:icon="@drawable/ic_maps"
         android:title="@string/maps"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_logout"
+        android:id="@+id/actionLogout"
         android:icon="@drawable/ic_logout"
         android:title="@string/logout"
         app:showAsAction="always" />

@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.project.storyapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.project.storyapp"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -27,13 +27,16 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         viewBinding = true
         buildConfig = true
@@ -41,46 +44,49 @@ android {
 }
 
 dependencies {
-
+    // Android Core & UI
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    // Camera & Media
     implementation(libs.androidx.camera.view)
-    implementation(libs.play.services.maps)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation(libs.lottie)
-    implementation(libs.glide)
     implementation(libs.androidx.exifinterface)
+    implementation(libs.glide)
 
-    // Retrofit
+    // Maps & Location
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
+
+    // Network
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
-    // Coroutines
+    // Architecture Components
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation (libs.kotlinx.coroutines.android)
-
-    // Datastore
     implementation(libs.androidx.datastore.preferences)
-
-    // Paging
     implementation(libs.androidx.paging.runtime.ktx)
+
+    // Coroutines
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
-    androidTestImplementation(libs.androidx.core.testing) //InstantTaskExecutorRule
-    androidTestImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
+    // Animation
+    implementation(libs.lottie)
 
-    testImplementation(libs.androidx.core.testing) // InstantTaskExecutorRule
-    testImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
 
-    // Location
-    implementation(libs.play.services.location)
+    // Android Testing
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

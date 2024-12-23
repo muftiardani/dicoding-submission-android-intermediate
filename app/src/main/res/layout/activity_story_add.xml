@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ToolbarTheme"
-            app:title="TaleNet"
+            app:title="StoryApp"
             app:titleTextColor="@color/white" />
 
         <ImageView
@@ -72,14 +72,14 @@
             android:scaleType="fitCenter"
             android:text="@string/gallery"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/ed_add_description"
+            app:layout_constraintBottom_toTopOf="@id/edAddDescription"
             app:layout_constraintEnd_toStartOf="@+id/cameraButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cameraButton" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ed_add_description"
+            android:id="@+id/edAddDescription"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginStart="16dp"
@@ -103,7 +103,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button_add"
+            android:id="@+id/buttonAdd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -122,8 +122,9 @@
             android:layout_marginStart="16dp"
             android:text="@string/upload_with_location"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/button_add"
+            app:layout_constraintBottom_toTopOf="@id/buttonAdd"
             android:layout_marginTop="16dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

@@ -22,17 +22,39 @@ class StoryWithLocationViewModel(
     val errorMessage: LiveData<String?> = _errorMessage
 
     fun showStoriesWithLocation() {
-        _isLoading.value = true
-        _errorMessage.value = null
         viewModelScope.launch {
             try {
-                val response = repository.getStoriesWithLocation()
-                _listStory.value = response.listStory
+                fetchStories()
             } catch (e: Exception) {
-                _errorMessage.value = e.message
-            } finally {
-                _isLoading.value = false
+                handleError(e)
             }
         }
+    }
+
+    private suspend fun fetchStories() {
+        setLoadingState(true)
+        clearErrorMessage()
+
+        val response = repository.getStoriesWithLocation()
+        _listStory.value = response.listStory
+
+        setLoadingState(false)
+    }
+
+    private fun handleError(exception: Exception) {
+        setErrorMessage(exception.message)
+        setLoadingState(false)
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
+    private fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    private fun setErrorMessage(message: String?) {
+        _errorMessage.value = message
     }
 }

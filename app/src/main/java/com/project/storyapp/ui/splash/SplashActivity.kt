@@ -9,14 +9,25 @@ import com.project.storyapp.R
 import com.project.storyapp.ui.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
+
+    companion object {
+        private const val SPLASH_DELAY = 2000L
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        setupSplashScreen()
+    }
 
+    private fun setupSplashScreen() {
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 2000)
+            navigateToLogin()
+        }, SPLASH_DELAY)
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }

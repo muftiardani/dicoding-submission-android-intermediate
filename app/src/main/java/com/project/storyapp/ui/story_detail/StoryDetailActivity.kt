@@ -6,52 +6,77 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.project.storyapp.R
 import com.project.storyapp.data.di.Injector
+import com.project.storyapp.data.response.Story
 import com.project.storyapp.databinding.ActivityStoryDetailBinding
-import com.bumptech.glide.Glide
 
 class StoryDetailActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_STORY_ID = "extra_story_id"
+    }
 
     private lateinit var binding: ActivityStoryDetailBinding
 
     private val viewModel: StoryDetailViewModel by viewModels {
-        Injector.provideStoryDetailViewModelFactory(
-            this
-        )
+        Injector.provideStoryDetailViewModelFactory(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupView()
+        loadStoryData()
+        setupObservers()
+    }
+
+    private fun setupView() {
         binding = ActivityStoryDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupToolbar()
+    }
 
+    private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
-        val storyId = intent.getStringExtra(EXTRA_STORY_ID)
-
-        if (storyId != null) {
+    private fun loadStoryData() {
+        intent.getStringExtra(EXTRA_STORY_ID)?.let { storyId ->
             viewModel.showDetailStory(storyId)
         }
+    }
 
-        viewModel.story.observe(this) { storyResponse ->
-            binding.tvDetailName.text = storyResponse.name
-            binding.tvDetailDescription.text = storyResponse.description
+    private fun setupObservers() {
+        with(viewModel) {
+            story.observe(this@StoryDetailActivity) { storyResponse ->
+                displayStoryDetails(storyResponse)
+            }
 
-            Glide.with(binding.ivDetailPhoto.context)
-                .load(storyResponse.photoUrl)
-                .placeholder(R.drawable.img_placeholder)
-                .into(binding.ivDetailPhoto)
+            isLoading.observe(this@StoryDetailActivity) { isLoading ->
+                showLoading(isLoading)
+            }
+
+            errorMessage.observe(this@StoryDetailActivity) { message ->
+                message?.let { showToast(it) }
+            }
         }
+    }
 
-        viewModel.isLoading.observe(this) {
-            showLoading(it)
+    private fun displayStoryDetails(story: Story) {
+        with(binding) {
+            tvDetailName.text = story.name
+            tvDetailDescription.text = story.description
+            loadStoryImage(story.photoUrl)
         }
+    }
 
-        viewModel.errorMessage.observe(this) {
-            if (it != null) Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }
+    private fun loadStoryImage(imageUrl: String?) {
+        Glide.with(binding.ivDetailPhoto.context)
+            .load(imageUrl)
+            .placeholder(R.drawable.img_placeholder)
+            .into(binding.ivDetailPhoto)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,7 +85,6 @@ class StoryDetailActivity : AppCompatActivity() {
                 onBackPressed()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -69,7 +93,7 @@ class StoryDetailActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
     }
 
-    companion object {
-        const val EXTRA_STORY_ID = "extra_story_id"
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
