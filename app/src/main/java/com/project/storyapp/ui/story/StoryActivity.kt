@@ -102,11 +102,11 @@ class StoryActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_logout -> {
+            R.id.actionLogout -> {
                 handleLogout()
                 true
             }
-            R.id.action_maps -> {
+            R.id.actionMaps -> {
                 navigateToMaps()
                 true
             }

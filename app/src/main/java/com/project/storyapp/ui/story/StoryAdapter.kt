@@ -95,7 +95,7 @@ class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(D
                 .into(binding.ivItemPhoto)
         }
 
-        fun getPhotoView() = itemView.findViewById<android.view.View>(R.id.iv_item_photo)
-        fun getNameView() = itemView.findViewById<android.view.View>(R.id.tv_item_name)
+        fun getPhotoView() = itemView.findViewById<android.view.View>(R.id.ivItemPhoto)
+        fun getNameView() = itemView.findViewById<android.view.View>(R.id.tvItemName)
     }
 }
