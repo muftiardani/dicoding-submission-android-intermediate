@@ -41,7 +41,6 @@ class StoryRepository private constructor(
         ).liveData
     }
 
-    // Additional configuration for PagingConfig
     private fun getDefaultPageConfig(): PagingConfig =
         PagingConfig(
             pageSize = ITEMS_PER_PAGE,
