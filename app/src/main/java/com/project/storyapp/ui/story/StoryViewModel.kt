@@ -22,7 +22,6 @@ class StoryViewModel(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    // Initialize stories in init block for better organization
     val stories: LiveData<PagingData<ListStoryItem>> = initializeStories()
 
     private fun initializeStories(): LiveData<PagingData<ListStoryItem>> {

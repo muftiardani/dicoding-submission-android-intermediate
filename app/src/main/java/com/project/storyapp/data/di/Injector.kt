@@ -51,10 +51,10 @@ object Injector {
 
     private fun provideStoryRepository(context: Context): StoryRepository {
         val userPreference = provideUserPreference(context)
-        val user = runBlocking { userPreference.getUser().first() }
+        val user = runBlocking { userPreference.getToken().first() }
         val apiService = ApiConfig.getApiService(user.token)
 
-        return StoryRepository.getInstance(apiService, userPreference)
+        return StoryRepository.getInstance(apiService)
     }
 
 
@@ -70,9 +70,9 @@ object Injector {
 
     private fun provideStoryDetailRepository(context: Context): StoryDetailRepository {
         val userPreference = provideUserPreference(context)
-        val user = runBlocking { userPreference.getUser().first() }
+        val user = runBlocking { userPreference.getToken().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return StoryDetailRepository.getInstance(apiService, userPreference)
+        return StoryDetailRepository.getInstance(apiService)
     }
 
     fun provideStoryDetailViewModelFactory(context: Context): ViewModelFactory {
@@ -86,9 +86,9 @@ object Injector {
 
     private fun provideStoryAddRepository(context: Context): StoryAddRepository {
         val userPreference = provideUserPreference(context)
-        val user = runBlocking { userPreference.getUser().first() }
+        val user = runBlocking { userPreference.getToken().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return StoryAddRepository.getInstance(apiService, userPreference)
+        return StoryAddRepository.getInstance(apiService)
     }
 
     private fun provideLocationService(context: Context): LocationService {
@@ -109,9 +109,9 @@ object Injector {
 
     private fun provideStoryWithLocationRepository(context: Context): StoryWithLocationRepository {
         val userPreference = provideUserPreference(context)
-        val user = runBlocking { userPreference.getUser().first() }
+        val user = runBlocking { userPreference.getToken().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return StoryWithLocationRepository.getInstance(apiService, userPreference)
+        return StoryWithLocationRepository.getInstance(apiService)
     }
 
     fun provideStoryWithLocationViewModelFactory(context: Context): ViewModelFactory {

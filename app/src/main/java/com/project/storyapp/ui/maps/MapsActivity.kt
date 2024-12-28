@@ -27,10 +27,6 @@ import com.project.storyapp.ui.story.StoryActivity
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    companion object {
-        private const val TAG = "MapsActivity"
-    }
-
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
@@ -177,6 +173,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "MapsActivity"
     }
 }
 

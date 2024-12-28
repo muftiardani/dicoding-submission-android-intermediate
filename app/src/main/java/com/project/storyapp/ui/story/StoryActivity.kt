@@ -22,10 +22,6 @@ import kotlinx.coroutines.launch
 
 class StoryActivity : AppCompatActivity() {
 
-    companion object {
-        private const val TAG = "StoryActivity"
-    }
-
     private lateinit var binding: ActivityStoryBinding
     private lateinit var storyAdapter: StoryAdapter
 
@@ -143,5 +139,9 @@ class StoryActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "StoryActivity"
     }
 }

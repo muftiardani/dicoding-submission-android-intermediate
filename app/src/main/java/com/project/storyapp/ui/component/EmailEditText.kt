@@ -14,10 +14,6 @@ class EmailEditText @JvmOverloads constructor(
     defStyleAttr: Int = android.R.attr.editTextStyle
 ) : TextInputEditText(context, attrs, defStyleAttr) {
 
-    companion object {
-        private const val TEXT_SIZE = 17f
-    }
-
     init {
         setupEditText()
     }
@@ -29,11 +25,9 @@ class EmailEditText @JvmOverloads constructor(
 
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // Not used
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // Not used
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -50,5 +44,9 @@ class EmailEditText @JvmOverloads constructor(
         } else {
             null
         }
+    }
+
+    companion object {
+        private const val TEXT_SIZE = 17f
     }
 }

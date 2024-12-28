@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkUserIsLoggedIn() {
         lifecycleScope.launch {
-            val user = viewModel.getUser().first()
+            val user = viewModel.getToken().first()
             if (user.token.isNotEmpty()) {
                 val intent = Intent(this@LoginActivity, StoryActivity::class.java)
                 startActivity(intent)

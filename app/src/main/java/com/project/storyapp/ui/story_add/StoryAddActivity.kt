@@ -30,11 +30,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 class StoryAddActivity : AppCompatActivity() {
 
-    companion object {
-        private const val TAG = "StoryAddActivity"
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
-    }
-
     private lateinit var binding: ActivityStoryAddBinding
 
     private val viewModel: StoryAddViewModel by viewModels {
@@ -225,5 +220,10 @@ class StoryAddActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        private const val TAG = "StoryAddActivity"
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
 }

@@ -15,10 +15,6 @@ class LoginViewModel(
     private val userPreference: UserPreference
 ) : ViewModel() {
 
-    companion object {
-        private const val TAG = "LoginViewModel"
-    }
-
     private val _loginResult = MutableLiveData<LoginResponse?>()
     val loginResult: LiveData<LoginResponse?> = _loginResult
 
@@ -81,5 +77,9 @@ class LoginViewModel(
         }
     }
 
-    fun getUser() = userPreference.getUser()
+    fun getToken() = userPreference.getToken()
+
+    companion object {
+        private const val TAG = "LoginViewModel"
+    }
 }

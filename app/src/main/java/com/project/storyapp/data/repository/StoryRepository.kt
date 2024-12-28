@@ -6,13 +6,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.project.storyapp.data.StoryPagingSource
-import com.project.storyapp.data.preference.UserPreference
 import com.project.storyapp.data.response.ListStoryItem
 import com.project.storyapp.data.retrofit.ApiService
 
 class StoryRepository private constructor(
-    private val apiService: ApiService,
-    private val userPreference: UserPreference
+    private val apiService: ApiService
 ) {
     companion object {
         private const val ITEMS_PER_PAGE = 5
@@ -21,11 +19,10 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
 
         fun getInstance(
-            apiService: ApiService,
-            userPreference: UserPreference
+            apiService: ApiService
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference).also {
+                instance ?: StoryRepository(apiService).also {
                     instance = it
                 }
             }

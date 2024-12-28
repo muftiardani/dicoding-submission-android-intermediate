@@ -17,6 +17,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+
     @FormUrlEncoded
     @POST("register")
     suspend fun register(
@@ -54,6 +55,6 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStoriesWithLocation(
-        @Query("location") location: Int = 1,
+        @Query("location") location: Int = 1
     ): StoryResponse
 }

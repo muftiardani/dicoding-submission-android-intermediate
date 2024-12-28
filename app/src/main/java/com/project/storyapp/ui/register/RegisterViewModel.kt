@@ -11,10 +11,6 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repository: RegisterRepository) : ViewModel() {
 
-    companion object {
-        private const val TAG = "RegisterViewModel"
-    }
-
     private val _registerResult = MutableLiveData<RegisterResponse?>()
     val registerResult: LiveData<RegisterResponse?> = _registerResult
 
@@ -64,5 +60,9 @@ class RegisterViewModel(private val repository: RegisterRepository) : ViewModel(
 
     private fun setErrorMessage(message: String) {
         _errorMessage.value = message
+    }
+
+    companion object {
+        private const val TAG = "RegisterViewModel"
     }
 }

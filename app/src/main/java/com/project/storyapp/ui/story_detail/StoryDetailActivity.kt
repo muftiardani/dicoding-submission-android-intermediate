@@ -14,10 +14,6 @@ import com.project.storyapp.databinding.ActivityStoryDetailBinding
 
 class StoryDetailActivity : AppCompatActivity() {
 
-    companion object {
-        const val EXTRA_STORY_ID = "extra_story_id"
-    }
-
     private lateinit var binding: ActivityStoryDetailBinding
 
     private val viewModel: StoryDetailViewModel by viewModels {
@@ -95,5 +91,9 @@ class StoryDetailActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        const val EXTRA_STORY_ID = "extra_story_id"
     }
 }

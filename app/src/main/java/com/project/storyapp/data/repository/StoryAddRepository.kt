@@ -1,9 +1,6 @@
 package com.project.storyapp.data.repository
 
 import android.util.Log
-import com.google.gson.Gson
-import com.project.storyapp.data.preference.UserPreference
-import com.project.storyapp.data.response.ErrorResponse
 import com.project.storyapp.data.response.FileUploadResponse
 import com.project.storyapp.data.retrofit.ApiService
 import okhttp3.MultipartBody
@@ -11,25 +8,8 @@ import okhttp3.RequestBody
 import retrofit2.HttpException
 
 class StoryAddRepository private constructor(
-    private val apiService: ApiService,
-    private val userPreference: UserPreference
-) {
-
-    companion object {
-        private const val TAG = "StoryAddRepository"
-        private val MULTIPART_FORM = MultipartBody.FORM
-
-        @Volatile
-        private var instance: StoryAddRepository? = null
-
-        fun getInstance(
-            apiService: ApiService,
-            userPreference: UserPreference
-        ): StoryAddRepository = instance ?: synchronized(this) {
-            instance ?: StoryAddRepository(apiService, userPreference)
-                .also { instance = it }
-        }
-    }
+    private val apiService: ApiService
+) : BaseRepository() {
 
     suspend fun uploadImage(
         file: MultipartBody.Part,
@@ -81,19 +61,18 @@ class StoryAddRepository private constructor(
         return response
     }
 
-    private fun handleHttpException(exception: HttpException): Nothing {
-        val errorResponse = parseErrorResponse(exception)
-        Log.e(TAG, "HTTP Error: ${exception.message}")
-        throw Exception(errorResponse.message)
-    }
+    companion object {
+        private const val TAG = "StoryAddRepository"
+        private val MULTIPART_FORM = MultipartBody.FORM
 
-    private fun handleGeneralException(exception: Exception): Nothing {
-        Log.e(TAG, "General Error: ${exception.message}")
-        throw exception
-    }
+        @Volatile
+        private var instance: StoryAddRepository? = null
 
-    private fun parseErrorResponse(exception: HttpException): ErrorResponse {
-        val errorBody = exception.response()?.errorBody()?.string()
-        return Gson().fromJson(errorBody, ErrorResponse::class.java)
+        fun getInstance(
+            apiService: ApiService
+        ): StoryAddRepository = instance ?: synchronized(this) {
+            instance ?: StoryAddRepository(apiService)
+                .also { instance = it }
+        }
     }
 }

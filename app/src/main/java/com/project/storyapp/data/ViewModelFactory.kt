@@ -32,27 +32,37 @@ class ViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(registerRepository!!) as T
+                val repository = requireNotNull(registerRepository) { "RegisterRepository must be provided" }
+                RegisterViewModel(repository) as T
             }
 
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(loginRepository!!, userPreference!!) as T
+                val repository = requireNotNull(loginRepository) { "LoginRepository must be provided" }
+                val preference = requireNotNull(userPreference) { "UserPreference must be provided" }
+                LoginViewModel(repository, preference) as T
             }
 
             modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
-                StoryViewModel(userPreference!!, storyRepository!!) as T
+                val preference = requireNotNull(userPreference) { "UserPreference must be provided" }
+                val repository = requireNotNull(storyRepository) { "StoryRepository must be provided" }
+                StoryViewModel(preference, repository) as T
             }
 
             modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
-                StoryDetailViewModel(storyDetailRepository!!) as T
+                val repository = requireNotNull(storyDetailRepository) { "StoryDetailRepository must be provided" }
+                StoryDetailViewModel(repository) as T
             }
 
             modelClass.isAssignableFrom(StoryAddViewModel::class.java) -> {
-                StoryAddViewModel(userPreference!!, storyAddRepository!!, locationService!!) as T
+                val repository = requireNotNull(storyAddRepository) { "StoryAddRepository must be provided" }
+                val preference = requireNotNull(userPreference) { "UserPreference must be provided" }
+                val service = requireNotNull(locationService) { "LocationService must be provided" }
+                StoryAddViewModel(repository, preference, service) as T
             }
 
             modelClass.isAssignableFrom(StoryWithLocationViewModel::class.java) -> {
-                StoryWithLocationViewModel(storyWithLocationRepository!!) as T
+                val repository = requireNotNull(storyWithLocationRepository) { "StoryWithLocationRepository must be provided" }
+                StoryWithLocationViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

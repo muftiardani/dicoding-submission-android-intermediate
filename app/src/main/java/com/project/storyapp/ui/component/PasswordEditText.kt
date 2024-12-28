@@ -15,11 +15,6 @@ class PasswordEditText @JvmOverloads constructor(
     defStyleAttr: Int = android.R.attr.editTextStyle
 ) : TextInputEditText(context, attrs, defStyleAttr) {
 
-    companion object {
-        private const val TEXT_SIZE = 17f
-        private const val MIN_PASSWORD_LENGTH = 8
-    }
-
     private var isPasswordVisible = false
 
     init {
@@ -34,7 +29,6 @@ class PasswordEditText @JvmOverloads constructor(
 
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // Not used
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -42,7 +36,6 @@ class PasswordEditText @JvmOverloads constructor(
         }
 
         override fun afterTextChanged(s: Editable?) {
-            // Not used
         }
     }
 
@@ -105,5 +98,10 @@ class PasswordEditText @JvmOverloads constructor(
 
     private fun moveSelectionToEnd() {
         setSelection(text?.length ?: 0)
+    }
+
+    companion object {
+        private const val TEXT_SIZE = 17f
+        private const val MIN_PASSWORD_LENGTH = 8
     }
 }

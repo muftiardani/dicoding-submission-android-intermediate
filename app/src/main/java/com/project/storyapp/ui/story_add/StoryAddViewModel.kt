@@ -12,8 +12,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class StoryAddViewModel(
-    private val userPreference: UserPreference,
     private val repository: StoryAddRepository,
+    private val userPreference: UserPreference,
     private val locationService: LocationService
 ) : ViewModel() {
 

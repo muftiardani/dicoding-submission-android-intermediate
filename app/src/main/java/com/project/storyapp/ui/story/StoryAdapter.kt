@@ -18,22 +18,6 @@ import com.project.storyapp.ui.story_detail.StoryDetailActivity
 
 class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
 
-    companion object {
-        private const val UNKNOWN_NAME = "Unknown"
-        private const val TRANSITION_NAME_PROFILE = "profile"
-        private const val TRANSITION_NAME_NAME = "name"
-
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
-            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemStoryCardBinding.inflate(
@@ -97,5 +81,21 @@ class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(D
 
         fun getPhotoView() = itemView.findViewById<android.view.View>(R.id.ivItemPhoto)
         fun getNameView() = itemView.findViewById<android.view.View>(R.id.tvItemName)
+    }
+
+    companion object {
+        private const val UNKNOWN_NAME = "Unknown"
+        private const val TRANSITION_NAME_PROFILE = "profile"
+        private const val TRANSITION_NAME_NAME = "name"
+
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

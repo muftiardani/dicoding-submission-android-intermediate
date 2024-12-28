@@ -17,9 +17,6 @@ import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Utility object untuk manajemen gambar
- */
 object ImageUtils {
     private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
     private const val MAXIMAL_SIZE = 1000000 // 1MB in bytes
@@ -33,9 +30,6 @@ object ImageUtils {
     private val timestamp: String
         get() = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 
-    /**
-     * Mendapatkan Uri untuk penyimpanan gambar
-     */
     fun getImageUri(context: Context): Uri {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             getImageUriForQ(context)
@@ -44,17 +38,11 @@ object ImageUtils {
         }
     }
 
-    /**
-     * Membuat temporary file untuk gambar
-     */
     fun createCustomTempFile(context: Context): File {
         val filesDir = context.externalCacheDir
         return File.createTempFile(timestamp, IMAGE_JPEG_SUFFIX, filesDir)
     }
 
-    /**
-     * Mengkonversi Uri ke File
-     */
     fun uriToFile(imageUri: Uri, context: Context): File {
         val myFile = createCustomTempFile(context)
         context.contentResolver.openInputStream(imageUri)?.use { inputStream ->
@@ -69,9 +57,6 @@ object ImageUtils {
         return myFile
     }
 
-    /**
-     * Mereduksi ukuran file gambar
-     */
     fun File.reduceFileImage(): File {
         val bitmap = BitmapFactory.decodeFile(path).getRotatedBitmap(this)
         var compressQuality = INITIAL_COMPRESS_QUALITY
@@ -118,13 +103,8 @@ object ImageUtils {
     }
 }
 
-/**
- * Extension functions untuk Bitmap
- */
 object BitmapUtils {
-    /**
-     * Mendapatkan rotasi yang benar untuk bitmap
-     */
+
     fun Bitmap.getRotatedBitmap(file: File): Bitmap {
         val exif = ExifInterface(file)
         val orientation = exif.getAttributeInt(
@@ -139,9 +119,6 @@ object BitmapUtils {
         }
     }
 
-    /**
-     * Merotasi bitmap sesuai dengan derajat yang ditentukan
-     */
     private fun Bitmap.rotateImage(angle: Float): Bitmap {
         val matrix = Matrix().apply {
             postRotate(angle)
