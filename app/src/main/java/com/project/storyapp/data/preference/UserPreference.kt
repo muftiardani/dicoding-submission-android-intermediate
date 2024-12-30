@@ -27,7 +27,7 @@ class UserPreference private constructor(
 
     suspend fun clearToken() {
         dataStore.edit { preferences ->
-            preferences.remove(TOKEN_KEY)
+            preferences.clear()
         }
     }
 

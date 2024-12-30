@@ -38,7 +38,7 @@ object ImageUtils {
         }
     }
 
-    fun createCustomTempFile(context: Context): File {
+    private fun createCustomTempFile(context: Context): File {
         val filesDir = context.externalCacheDir
         return File.createTempFile(timestamp, IMAGE_JPEG_SUFFIX, filesDir)
     }

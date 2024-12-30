@@ -57,7 +57,6 @@ class StoryAddRepository private constructor(
             lat = locationData.lat,
             lon = locationData.lon
         )
-        Log.d(TAG, "Upload successful: $response")
         return response
     }
 
