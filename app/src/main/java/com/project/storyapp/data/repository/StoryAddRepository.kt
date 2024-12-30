@@ -1,6 +1,5 @@
 package com.project.storyapp.data.repository
 
-import android.util.Log
 import com.project.storyapp.data.response.FileUploadResponse
 import com.project.storyapp.data.retrofit.ApiService
 import okhttp3.MultipartBody
