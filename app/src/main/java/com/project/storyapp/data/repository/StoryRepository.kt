@@ -12,21 +12,6 @@ import com.project.storyapp.data.retrofit.ApiService
 class StoryRepository private constructor(
     private val apiService: ApiService
 ) {
-    companion object {
-        private const val ITEMS_PER_PAGE = 5
-
-        @Volatile
-        private var instance: StoryRepository? = null
-
-        fun getInstance(
-            apiService: ApiService
-        ): StoryRepository =
-            instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService).also {
-                    instance = it
-                }
-            }
-    }
 
     fun getStories(): LiveData<PagingData<ListStoryItem>> {
         return Pager(
@@ -49,4 +34,20 @@ class StoryRepository private constructor(
             prefetchDistance = ITEMS_PER_PAGE,
             maxSize = PagingConfig.MAX_SIZE_UNBOUNDED
         )
+
+    companion object {
+        private const val ITEMS_PER_PAGE = 5
+
+        @Volatile
+        private var instance: StoryRepository? = null
+
+        fun getInstance(
+            apiService: ApiService
+        ): StoryRepository =
+            instance ?: synchronized(this) {
+                instance ?: StoryRepository(apiService).also {
+                    instance = it
+                }
+            }
+    }
 }

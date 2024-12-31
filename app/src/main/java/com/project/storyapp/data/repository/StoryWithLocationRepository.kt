@@ -10,6 +10,7 @@ import retrofit2.HttpException
 class StoryWithLocationRepository(
     private val apiService: ApiService
 ) {
+
     suspend fun getStoriesWithLocation(): StoryResponse {
         return try {
             val response = apiService.getStoriesWithLocation()
